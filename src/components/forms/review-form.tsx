@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import StarRating from "@/components/star-rating";
-import SubmitButton from "@/components/submit-button";
+import { PostReview, type State } from "@/actions/review-action";
+import StarRating from "../star-rating";
+import SubmitButton from "../submit-button";
 import {
   Card,
   CardContent,
@@ -21,10 +23,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import { useFormState } from "react-dom";
+import { useState } from "react";
 
 export default function ReviewForm() {
-  return (
-    <form action="" method="post">
+  const initalState: State = { message: "", status: undefined };
+  const [state, formAction] = useFormState(PostReview, initalState);
+  const [images, setImages] = useState<null | string[]>(null);  return (
+    <form action={formAction}>
       <CardHeader>
         <CardTitle>
           Review the course you have taken with <span className="text-primary">Course Geeks</span>
@@ -44,18 +50,18 @@ export default function ReviewForm() {
         </div>
 
         <div className="flex flex-col gap-y-2">
-          <Label htmlFor="name">Description</Label>
+          <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
             name="description"
             placeholder="Type here..."
-            minLength={3}
+            minLength={10}
             maxLength={2500}
           />
         </div>
 
         <div className="flex flex-col gap-y-2">
-          <Label htmlFor="name">Category</Label>
+          <Label htmlFor="category">Category</Label>
           <Select name="category">
             <SelectTrigger className="w-full" id="color">
               <SelectValue placeholder="Select a Category" />
@@ -86,11 +92,15 @@ export default function ReviewForm() {
         </div>
 
         <div className="flex flex-col gap-y-2">
-        <Label htmlFor="name">Rating</Label>
-
+        <Label htmlFor="rating">Rating</Label>
           <Card>
             <StarRating/>
           </Card>
+        </div>
+
+        <div className="flex flex-col gap-y-2">
+          <Label htmlFor="image">Images</Label>
+          
         </div>
       </CardContent>
       <CardFooter>
