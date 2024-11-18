@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import prisma from "@/lib/db";
@@ -6,15 +5,13 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-
 export type State = {
-    status: "error" | "success" | undefined;
-    errors?: {
-      [key: string]: string[];
-    };
-    message?: string | null;
+  status: "error" | "success" | undefined;
+  errors?: {
+    [key: string]: string[];
   };
-  
+  message?: string | null;
+};
 
 const PostReviewSchema = z.object({
   name: z.string().min(3, { message: "Name is too short (min 3 characters)" }),
@@ -30,6 +27,7 @@ const PostReviewSchema = z.object({
     .max(5, { message: "Rating is too big" }),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function PostReview(prevState: any, formData: FormData) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -62,20 +60,19 @@ export async function PostReview(prevState: any, formData: FormData) {
         coursedescription: parsedData.data.description,
         category: parsedData.data.category,
         userId: user.id,
-      }
+      },
     });
-  
+
     await prisma.rating.create({
       data: {
         reviewId: review.id,
         userId: user.id,
         ratingValue: parsedData.data.rating,
-      }
+      },
     });
   });
-  
 
-  return redirect("/reviews")
+  return redirect("/reviews");
 }
 
 export async function GetReviews() {
@@ -99,12 +96,12 @@ export async function GetReviews() {
       },
     }),
     prisma.rating.groupBy({
-      by: ['reviewId'],
+      by: ["reviewId"],
       _avg: {
         ratingValue: true,
       },
       orderBy: {
-        reviewId: 'asc',
+        reviewId: "asc",
       },
     }),
   ]);
@@ -112,13 +109,51 @@ export async function GetReviews() {
   const reviewsWithAvgRating = reviews.map((review) => {
     const avgRatingEntry = avgRatings.find((r) => r.reviewId === review.id);
     const avgRating = avgRatingEntry?._avg?.ratingValue ?? 0;
-  
+
     return {
       ...review,
       averageRating: avgRating,
     };
   });
-  
+
   return reviewsWithAvgRating;
-  
+}
+
+export async function GetReview(reviewId: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  const review = await prisma.review.findUnique({
+    where: {
+      id: reviewId,
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  return review;
+}
+
+export async function PostRating(formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  const reviewId = formData.get("reviewId") as string;
+  const ratingValue = Number(formData.get("rating")) as number;
+
+  await prisma.rating.create({
+    data: {
+      reviewId: reviewId,
+      userId: user.id,
+      ratingValue: ratingValue,
+    },
+  });
 }
