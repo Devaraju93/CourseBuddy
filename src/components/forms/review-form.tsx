@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 import { PostReview, type State } from "@/actions/review-action";
 import StarRating from "../star-rating";
@@ -24,16 +24,28 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { useFormState } from "react-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UploadDropzone } from "@/lib/uploadthing";
+import { toast } from "sonner";
 
 export default function ReviewForm() {
   const initalState: State = { message: "", status: undefined };
   const [state, formAction] = useFormState(PostReview, initalState);
-  const [images, setImages] = useState<null | string[]>(null);  return (
+  const [images, setImages] = useState<null | string[]>(null);
+
+  useEffect(() => {
+    if (state.status === "success") {
+      toast.success(state.message);
+    } else if (state.status === "error") {
+      toast.error(state.message);
+    }
+  }, [state]);
+  return (
     <form action={formAction}>
       <CardHeader>
         <CardTitle>
-          Review the course you have taken with <span className="text-primary">Course Geeks</span>
+          Review the course you have taken with{" "}
+          <span className="text-primary">Course Geeks</span>
         </CardTitle>
         <CardDescription>Note all fields are required*</CardDescription>
       </CardHeader>
@@ -47,6 +59,9 @@ export default function ReviewForm() {
             placeholder="Name of course eg. Python for beginners"
             minLength={3}
           />
+          {state?.errors?.["name"]?.[0] && (
+            <p className="text-destructive">{state?.errors?.["name"]?.[0]}</p>
+          )}
         </div>
 
         <div className="flex flex-col gap-y-2">
@@ -58,6 +73,11 @@ export default function ReviewForm() {
             minLength={10}
             maxLength={2500}
           />
+          {state?.errors?.["description"]?.[0] && (
+            <p className="text-destructive">
+              {state?.errors?.["description"]?.[0]}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-y-2">
@@ -89,18 +109,39 @@ export default function ReviewForm() {
               </SelectGroup>
             </SelectContent>
           </Select>
+          {state?.errors?.["category"]?.[0] && (
+            <p className="text-destructive">
+              {state?.errors?.["category"]?.[0]}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-y-2">
-        <Label htmlFor="rating">Rating</Label>
+          <Label htmlFor="rating">Rating</Label>
           <Card>
-            <StarRating/>
+            <StarRating />
           </Card>
+          {state?.errors?.["rating"]?.[0] && (
+            <p className="text-destructive">{state?.errors?.["rating"]?.[0]}</p>
+          )}
         </div>
 
         <div className="flex flex-col gap-y-2">
+          <input type="hidden" name="image" value={JSON.stringify(images)} />
           <Label htmlFor="image">Images</Label>
-          
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setImages(res.map((item) => item.url));
+              toast.success("Your images have been uploaded");
+            }}
+            onUploadError={(error: Error) => {
+              toast.error("Something went wrong, try again");
+            }}
+          />
+          {state?.errors?.["image"]?.[0] && (
+            <p className="text-destructive">{state?.errors?.["image"]?.[0]}</p>
+          )}
         </div>
       </CardContent>
       <CardFooter>

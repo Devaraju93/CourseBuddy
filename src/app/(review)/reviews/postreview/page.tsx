@@ -9,8 +9,6 @@ export default async function PostReview(){
     if(!isLoggedIn){
         return redirect("/api/auth/login")
     }
-
-
     return(
         <section className="max-w-7xl mx-auto px-4 md:px-8 mb-14 mt-6">
         <Card>

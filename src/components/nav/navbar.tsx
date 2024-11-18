@@ -45,9 +45,12 @@ export default async function Navbar() {
           About
         </Link>
         {isLoggedIn ? (
+          <>
           <LogoutLink>
             <Button>Logout</Button>
           </LogoutLink>
+          <Link href="/reviews/postreview">Post Review</Link>
+          </>
         ) : (
           <>
             <LoginLink>
