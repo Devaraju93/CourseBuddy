@@ -36,5 +36,5 @@ export async function GET() {
     });
   }
 
-  return NextResponse.redirect("http://localhost:3000/profile");
+  return NextResponse.redirect(process.env.NODE_ENV==='development' ? 'http://localhost:3000/': "https://course-buddy-nine.vercel.app/");
 }
