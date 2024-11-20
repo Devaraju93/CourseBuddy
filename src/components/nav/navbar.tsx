@@ -16,40 +16,36 @@ export default async function Navbar() {
       <Link className="flex items-center justify-center" href="#">
         <BookOpen className="h-6 w-6 text-primary" />
         <span className="ml-2 text-2xl font-bold text-primary">
-          CourseBuddy
+          Course Geeks
         </span>
       </Link>
       <nav className="ml-auto flex items-center gap-4 sm:gap-6">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
+          href="/"
         >
           Home
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
-        >
-          Courses
-        </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
+          href="/reviews"
         >
           Reviews
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
+          href="/about"
         >
           About
         </Link>
         {isLoggedIn ? (
           <>
+          <Link href="/reviews/postreview">
+          <Button variant="secondary">Post Review</Button>
+          </Link>
           <LogoutLink>
             <Button>Logout</Button>
           </LogoutLink>
-          <Link href="/reviews/postreview">Post Review</Link>
           </>
         ) : (
           <>
