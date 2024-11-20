@@ -16,7 +16,7 @@ export default async function Navbar() {
       <Link className="flex items-center justify-center" href="#">
         <BookOpen className="h-6 w-6 text-primary" />
         <span className="ml-2 text-2xl font-bold text-primary">
-          Course Geeks
+          CourseBuddy
         </span>
       </Link>
       <nav className="ml-auto flex items-center gap-4 sm:gap-6">

@@ -5,7 +5,7 @@ export default function FeatureSection(){
         <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-              Why Choose Course Geeks?
+              Why Choose CourseBuddy?
             </h2>
             <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3">
               <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">

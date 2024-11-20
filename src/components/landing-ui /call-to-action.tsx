@@ -11,7 +11,7 @@ export default function CallToAction(){
                   Ready to Find Your Next Course?
                 </h2>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Join thousands of learners who have found their perfect courses through Course Geeks.
+                  Join thousands of learners who have found their perfect courses through CourseBuddy.
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-2">
