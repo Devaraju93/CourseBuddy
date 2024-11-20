@@ -1,6 +1,5 @@
 import { GetReview } from "@/actions/review-action";
 import RatingForm from "@/components/forms/rating-form";
-import StarRating from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";

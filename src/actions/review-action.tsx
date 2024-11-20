@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import prisma from "@/lib/db";
@@ -96,13 +97,10 @@ export async function PostReview(prevState: any, formData: FormData) {
   return redirect("/reviews");
 }
 
-import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-
 export async function GetReviews(searchParams: Record<string, string>) {
   const { page, query, category, courseprovider, courseprice } = searchParams;
 
-  const filters: Prisma.ReviewWhereInput = {};
+  const filters: any = {};
 
   if (category) filters.category = category;
   if (courseprovider) filters.courseprovider = courseprovider;

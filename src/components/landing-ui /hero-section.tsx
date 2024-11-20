@@ -1,7 +1,3 @@
-import { Search } from "lucide-react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-
 export default function HeroSection(){
     return(
         <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32 xl:py-48">

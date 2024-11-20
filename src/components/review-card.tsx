@@ -125,6 +125,8 @@ export default function ReviewCard({
           <div className="flex items-center justify-between">
             <h4 className="font-semibold">{courseName}</h4>
             <Badge variant="secondary">{courseCategory}</Badge>
+            <Badge variant="secondary">{courseprovider}</Badge>
+
           </div>
           <p className="text-sm font-medium">Rs.{price.toFixed(2)}</p>
         </div>

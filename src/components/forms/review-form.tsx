@@ -184,7 +184,7 @@ export default function ReviewForm() {
               setImages(res[0].url);
               toast.success("Your images have been uploaded");
             }}
-            onUploadError={(error: Error) => {
+            onUploadError={() => {
               toast.error("Something went wrong, try again");
             }}
           />

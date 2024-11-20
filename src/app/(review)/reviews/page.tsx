@@ -20,7 +20,7 @@ export default async function Reviews({
       
       </div>
       <main className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {reviewsWithDetails.map((review:any) => (
+        {reviewsWithDetails.map((review) => (
           <ReviewCard
             key={review.id}
             reviewId={review.id}
