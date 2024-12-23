@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import prisma from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
 import { z } from "zod";
 
 export type State = {
@@ -97,10 +98,11 @@ export async function PostReview(prevState: any, formData: FormData) {
   return redirect("/reviews");
 }
 
+
 export async function GetReviews(searchParams: Record<string, string>) {
   const { page, query, category, courseprovider, courseprice } = searchParams;
 
-  const filters: any = {};
+  const filters:any = {}
 
   if (category) filters.category = category;
   if (courseprovider) filters.courseprovider = courseprovider;
@@ -356,4 +358,26 @@ export async function LikeReview(prevState: any, formData: FormData) {
 
   };
   return state;
+}
+
+export async function createComment(formData:FormData){
+  const {getUser} = getKindeServerSession()
+  const user = await getUser()
+
+  if(!user){
+    return redirect('/api/auth/login')
+  }
+
+  const comment = formData.get("comment") as string
+  const reviewId = formData.get("reviewId") as string
+
+  const data = await prisma.comment.create({
+    data:{
+      text:comment,
+      userId: user.id,
+      reviewId:reviewId
+    }
+  })
+
+  revalidatePath(`/review/${reviewId}`)
 }
