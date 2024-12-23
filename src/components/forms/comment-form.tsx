@@ -1,13 +1,16 @@
 "use client";
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useRef } from "react";
 import SubmitButton from "../submit-button";
 import { createComment } from "@/actions/review-action";
+
 interface iAppPorps {
     reviewId: string;
 }
-export function CommentForm({ reviewId }: iAppPorps) {
+
+export default function CommentForm({ reviewId }: iAppPorps) {
   const ref = useRef<HTMLFormElement>(null);
   return (
     <form
@@ -18,7 +21,7 @@ export function CommentForm({ reviewId }: iAppPorps) {
       }}
       ref={ref}
     >
-      <input type="hidden" name="postId" value={reviewId} />
+      <input type="hidden" name="reviewId" value={reviewId} />
       <Label>Comment right here</Label>
       <Textarea
         placeholder="What are your thoughts?"
