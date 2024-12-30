@@ -24,7 +24,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
-import { UploadDropzone } from "@/lib/uploadthings";
+import { UploadDropzone } from "@/lib/uploadthing";
 import { toast } from "sonner";
 
 export default function ReviewForm() {
@@ -185,6 +185,7 @@ export default function ReviewForm() {
               toast.success("Your images have been uploaded");
             }}
             onUploadError={(error: Error) => {
+              console.log(error)
               toast.error("Something went wrong, try again");
             }}
           />

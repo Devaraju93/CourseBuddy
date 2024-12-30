@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use server"
 
 import prisma from "@/lib/db"
@@ -29,7 +31,9 @@ export async function GetReviewsAdmin(searchParams: Record<string, string>) {
       ];
     }
   
-    const [count, reviews, avgRatings, likeDislikeCounts] = await prisma.$transaction([
+    // const [count, reviews, avgRatings, likeDislikeCounts] = await prisma.$transaction([
+
+    const [count, reviews, avgRatings] = await prisma.$transaction([
       prisma.review.count({
         where: filters,
       }),
@@ -74,27 +78,27 @@ export async function GetReviewsAdmin(searchParams: Record<string, string>) {
       }),
     ]);
   
-    interface LikeDislikeCount {
-      reviewId: string;
-      type: "LIKE" | "DISLIKE";
-      _count: {
-        type: number;
-      };
-    }
+    // interface LikeDislikeCount {
+    //   reviewId: string;
+    //   type: "LIKE" | "DISLIKE";
+    //   _count: {
+    //     type: number;
+    //   };
+    // }
   
-    const typedLikeDislikeCounts = likeDislikeCounts as LikeDislikeCount[];
+    // const typedLikeDislikeCounts = likeDislikeCounts as LikeDislikeCount[];
   
     const reviewsWithDetails = reviews.map((review) => {
       const avgRatingEntry = avgRatings.find((r) => r.reviewId === review.id);
       const avgRating = avgRatingEntry?._avg?.ratingValue ?? 0;
   
-      const likeCount = typedLikeDislikeCounts.find(
-        (ld) => ld.reviewId === review.id && ld.type === "LIKE"
-      )?._count.type ?? 0;
+      // const likeCount = typedLikeDislikeCounts.find(
+      //   (ld) => ld.reviewId === review.id && ld.type === "LIKE"
+      // )?._count.type ?? 0;
   
-      const dislikeCount = typedLikeDislikeCounts.find(
-        (ld) => ld.reviewId === review.id && ld.type === "DISLIKE"
-      )?._count.type ?? 0;
+      // const dislikeCount = typedLikeDislikeCounts.find(
+      //   (ld) => ld.reviewId === review.id && ld.type === "DISLIKE"
+      // )?._count.type ?? 0;
   
       return {
         ...review,

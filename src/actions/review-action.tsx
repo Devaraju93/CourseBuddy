@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use server";
 
 import prisma from "@/lib/db";
@@ -398,7 +400,7 @@ export async function createComment(formData: FormData) {
   const comment = formData.get("comment") as string;
   const reviewId = formData.get("reviewId") as string;
 
-  const data = await prisma.comment.create({
+   await prisma.comment.create({
     data: {
       text: comment,
       userId: user.id,
